@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	logger "github.com/seungyeop-lee/bcrypt-cli/log"
 
@@ -10,8 +11,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var executeFileName = filepath.Base(os.Args[0])
+
 var rootCmd = &cobra.Command{
-	Use: "bcrypt-cli",
+	Use: executeFileName,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		verbose, _ := cmd.Flags().GetBool("verbose")
 		logger.IsVerbose = verbose
@@ -20,8 +23,9 @@ var rootCmd = &cobra.Command{
 
 var generateCmd = &cobra.Command{
 	Use:     "generate",
+	Aliases: []string{"gen", "g"},
 	Short:   "Generate hash",
-	Example: "bcrypt-cli generate -p myPassword",
+	Example: fmt.Sprintf("%s generate -p myPassword", executeFileName),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		password, _ := cmd.Flags().GetString("password")
 		logger.Info(fmt.Sprintf("input password: %s", password))
@@ -46,7 +50,7 @@ var generateCmd = &cobra.Command{
 var costCmd = &cobra.Command{
 	Use:     "cost",
 	Short:   "Calculate cost from hash",
-	Example: "bcrypt-cli cost -i '$2a$10$iJ/CnWkU8efsEKnnR14vl.MYVfy9adcAXxpPeiLrGaHTaKx5JBbse'",
+	Example: fmt.Sprintf("%s cost -i '$2a$10$iJ/CnWkU8efsEKnnR14vl.MYVfy9adcAXxpPeiLrGaHTaKx5JBbse'", executeFileName),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		hash, _ := cmd.Flags().GetString("hash")
 		logger.Info(fmt.Sprintf("input hash: %s", hash))
@@ -67,9 +71,10 @@ var costCmd = &cobra.Command{
 
 var checkCmd = &cobra.Command{
 	Use:     "check",
+	Aliases: []string{"c"},
 	Short:   "Check valid password and hash",
 	Long:    "As a result of checking the password and hash, 0 if valid and 1 if invalid are returned as the status code",
-	Example: "bcrypt-cli check -p myPassword -i '$2a$10$iJ/CnWkU8efsEKnnR14vl.MYVfy9adcAXxpPeiLrGaHTaKx5JBbse'",
+	Example: fmt.Sprintf("%s check -p myPassword -i '$2a$10$iJ/CnWkU8efsEKnnR14vl.MYVfy9adcAXxpPeiLrGaHTaKx5JBbse'", executeFileName),
 	Run: func(cmd *cobra.Command, args []string) {
 		password, _ := cmd.Flags().GetString("password")
 		logger.Info(fmt.Sprintf("input password: %s", password))
