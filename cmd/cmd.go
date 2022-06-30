@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/seungyeop-lee/bcrypt-cli/app"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var rootCmd = &cobra.Command{
@@ -68,7 +69,7 @@ var checkCmd = &cobra.Command{
 		checker := app.NewChecker()
 		err := checker.Check(password, hash)
 
-		if err != nil {
+		if err == nil {
 			fmt.Printf("check result: %s\n", "success")
 		} else {
 			fmt.Printf("check result: %s\n", "failure")
@@ -93,7 +94,7 @@ func Execute() {
 	rootCmd.AddCommand(checkCmd)
 
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		_, _ = fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }

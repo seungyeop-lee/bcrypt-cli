@@ -1,6 +1,10 @@
 package app
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"strings"
+
+	"golang.org/x/crypto/bcrypt"
+)
 
 type Generator struct {
 	cost int
@@ -18,7 +22,8 @@ func NewGenerator(cost int) *Generator {
 	return &Generator{cost: cost}
 }
 
-func (g Generator) Generate(password string) (string, error) {
+func (g Generator) Generate(inputPassword string) (string, error) {
+	password := strings.TrimSpace(inputPassword)
 	generated, err := bcrypt.GenerateFromPassword([]byte(password), g.Cost())
 	return string(generated), err
 }
