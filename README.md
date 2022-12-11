@@ -1,14 +1,8 @@
 # bcrypt-cli
 
-## build
-
-```shell
-make build
-```
-
 ## run
 
-Run the executable file in the "bin" folder after the build.
+Run the executable file in the "bin" folder.
 
 ## usage
 
@@ -30,4 +24,10 @@ Flags:
   -v, --verbose   run by verbose mode (for debug)
 
 Use "bcrypt-cli-macos-amd64 [command] --help" for more information about a command.
+```
+
+## build
+
+```shell
+make build
 ```
